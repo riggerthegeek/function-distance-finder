@@ -4,6 +4,6 @@ provider:
 
 functions:
   distance-finder:
-    lang: node-armhf
+    lang: node
     handler: ./distance-finder
     image: distance-finder
