@@ -1,0 +1,9 @@
+provider:
+  name: faas
+  gateway: http://localhost:8080
+
+functions:
+  distance-finder:
+    lang: node-armhf
+    handler: ./distance-finder
+    image: distance-finder
