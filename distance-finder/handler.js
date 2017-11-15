@@ -15,7 +15,7 @@ if (apiKey) {
   distance.apiKey = apiKey;
 }
 
-function getDistance (opts = {}, cb) {
+function getDistance (opts = {}) {
   return new Promise((resolve, reject) => {
     distance.get(opts, (err, data) => {
       if (err) {
@@ -25,12 +25,10 @@ function getDistance (opts = {}, cb) {
 
       resolve(data);
     });
-  }).then(({ distanceValue }) => cb(null, distanceValue))
-    .catch(err => cb(err));
+  }).then(({ distanceValue }) => distanceValue);
 }
 
-module.exports = (args = {}) => {
-  console.log(args);
+module.exports = (args = {}, cb) => {
   const origin = args.start;
   const destination = args.dest;
   const isReturn = args.return || false;
@@ -49,6 +47,7 @@ module.exports = (args = {}) => {
     avoid: args.avoid,
   };
 
+
   const tasks = [
     getDistance(opts),
   ];
@@ -63,5 +62,7 @@ module.exports = (args = {}) => {
   }
 
   return Promise.all(tasks)
-    .then(([ outbound, inbound = 0]) => outbound + inbound);
+    .then(([ outbound, inbound = 0]) => outbound + inbound)
+    .then(res => cb(null, res))
+    .catch(err => cb(err));
 };
