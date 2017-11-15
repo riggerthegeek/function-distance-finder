@@ -6,4 +6,4 @@ functions:
   distance-finder:
     lang: node
     handler: ./distance-finder
-    image: distance-finder
+    image: riggerthegeek/distance-finder

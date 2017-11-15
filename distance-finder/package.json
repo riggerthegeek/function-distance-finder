@@ -1,12 +1,26 @@
 {
-  "name": "function",
-  "version": "1.0.0",
-  "description": "",
-  "main": "handler.js",
+  "name": "function-distance-finder",
+  "version": "0.0.0",
+  "description": "Converts two postcodes to distance",
+  "main": "./src/handler",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run -s test:unit",
+    "test:unit": "mocha --throw-deprecation --ui bdd --full-trace --recursive --reporter mocha-multi --reporter-options spec=-,xunit=./reports/unit.xml,doc=./reports/unit.html test/unit",
+    "watch:test:unit": "nodemon --exec 'npm run -s test:unit' --legacy-watch"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Simon Emms <simon@simonemms.com>",
+  "license": "MIT",
+  "dependencies": {
+    "google-distance": "^1.0.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^4.0.1",
+    "mocha-multi": "^0.11.1",
+    "proxyquire": "^1.8.0",
+    "sinon": "^4.0.1",
+    "sinon-chai": "^2.14.0"
+  },
+  "private": true
 }
