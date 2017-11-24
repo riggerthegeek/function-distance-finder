@@ -1,32 +1,51 @@
-FROM resin/raspberry-pi-alpine-node:6.11
+FROM resin/raspberry-pi-alpine-node:8
+
+LABEL maintainer="Simon Emms <simonemms.com>"
+
+ARG FWATCHDOG_VERSION="0.6.12"
 
 RUN [ "cross-build-start" ]
 
-RUN apk --no-cache add curl \
-    && echo "Pulling watchdog binary from Github." \
-    && curl -sSL https://github.com/openfaas/faas/releases/download/0.6.9/fwatchdog-armhf > /usr/bin/fwatchdog \
-    && chmod +x /usr/bin/fwatchdog \
-    && apk del curl --no-cache
+RUN addgroup -S node && adduser -S -g node node
 
-WORKDIR /root/
+# Add the fwatchdog
+ADD https://github.com/openfaas/faas/releases/download/${FWATCHDOG_VERSION}/fwatchdog /usr/bin
+RUN chmod +x /usr/bin/fwatchdog
 
-COPY package.json   .
+# Set correct permissions to use non root user
+WORKDIR /home/node/
 
+# Wrapper/boot-strapper
+COPY package.json ./
+
+# This ordering means the npm installation is cached for the outer function handler.
 RUN npm install --production
-COPY index.js       .
-COPY function       function
-WORKDIR /root/function
 
-ENV NPM_CONFIG_LOGLEVEL warn
+# Copy outer function handler
+COPY index.js ./
+
+# COPY function node packages and install, adding this as a separate
+# entry allows caching of npm install
+WORKDIR /home/node/function
+COPY function/*.json ./
 RUN npm install --production || :
-WORKDIR /root/
 
+# COPY function files and folders
+COPY function/ ./
+
+# Set correct permissions to use non root user
+WORKDIR /home/node/
+
+# chmod for tmp is for a buildkit issue (@alexellis)
+RUN chown node:node -R /home/node \
+    && chmod 777 /tmp
+
+RUN [ "cross-build-end" ]
+
+# Define the OpenFAAS envvars here
 ENV cgi_headers="true"
-
 ENV fprocess="node index.js"
 
 HEALTHCHECK --interval=1s CMD [ -e /tmp/.lock ] || exit 1
-
-RUN [ "cross-build-end" ]
 
 CMD ["fwatchdog"]

@@ -1,49 +1,44 @@
-FROM node:6.11.2-alpine
+FROM node:8-alpine
 
-RUN addgroup -S app && adduser -S -g app app
+LABEL maintainer="Simon Emms <simonemms.com>"
 
-# Alternatively use ADD https:// (which will not be cached by Docker builder)
-RUN apk --no-cache add curl \
-    && echo "Pulling watchdog binary from Github." \
-    && curl -sSL https://github.com/openfaas/faas/releases/download/0.6.12/fwatchdog > /usr/bin/fwatchdog \
-    && chmod +x /usr/bin/fwatchdog \
-    && apk del curl --no-cache
+ARG FWATCHDOG_VERSION="0.6.12"
 
-WORKDIR /root/
+# Add the fwatchdog
+ADD https://github.com/openfaas/faas/releases/download/${FWATCHDOG_VERSION}/fwatchdog /usr/bin
+RUN chmod +x /usr/bin/fwatchdog
 
-# Turn down the verbosity to default level.
-ENV NPM_CONFIG_LOGLEVEL warn
-
-RUN mkdir -p /home/app
+# Set correct permissions to use non root user
+WORKDIR /home/node/
 
 # Wrapper/boot-strapper
-WORKDIR /home/app
 COPY package.json ./
 
 # This ordering means the npm installation is cached for the outer function handler.
-RUN npm i
+RUN npm install --production
 
 # Copy outer function handler
 COPY index.js ./
 
 # COPY function node packages and install, adding this as a separate
 # entry allows caching of npm install
-WORKDIR /home/app/function
+WORKDIR /home/node/function
 COPY function/*.json ./
-RUN npm i || :
+RUN npm install --production || :
 
 # COPY function files and folders
 COPY function/ ./
 
 # Set correct permissions to use non root user
-WORKDIR /home/app/
+WORKDIR /home/node/
 
 # chmod for tmp is for a buildkit issue (@alexellis)
-RUN chown app:app -R /home/app \
+RUN chown node:node -R /home/node \
     && chmod 777 /tmp
 
-USER app
+USER node
 
+# Define the OpenFAAS envvars here
 ENV cgi_headers="true"
 ENV fprocess="node index.js"
 
