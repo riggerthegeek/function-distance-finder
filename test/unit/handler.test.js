@@ -16,7 +16,7 @@ describe('Handler tests', function () {
       get: sinon.stub(),
     };
 
-    this.handler = proxyquire('./src/handler', {
+    this.handler = proxyquire('./function/handler', {
       'google-distance': this.distance,
     });
   });
