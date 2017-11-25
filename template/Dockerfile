@@ -1,6 +1,6 @@
 FROM node:8-alpine
 
-LABEL maintainer="Simon Emms <simonemms.com>"
+LABEL maintainer="Simon Emms <simon@simonemms.com>"
 
 ARG FWATCHDOG_VERSION="0.6.12"
 
