@@ -10,11 +10,7 @@ const yml = require('js-yaml');
 
 /* Files */
 
-const apiKey = process.env.API_KEY;
-
-if (apiKey) {
-  distance.apiKey = apiKey;
-}
+distance.apiKey = process.env.API_KEY;
 
 function getDistance (opts = {}) {
   return new Promise((resolve, reject) => {
@@ -68,6 +64,4 @@ module.exports = (input) => Promise
 
     return Promise.all(tasks);
   })
-  .then(([outbound, inbound = 0]) => ({
-    dist: outbound + inbound
-  }));
+  .then(([outbound, inbound = 0]) => String(outbound + inbound));

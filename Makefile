@@ -7,9 +7,16 @@ ARCH_DOCKER := ".armhf"
 ARCH_TAG := "-armhf"
 endif
 
+TAG_NAME = "${DOCKER_IMG}"
+ifneq ($(DOCKER_USER), "")
+TAG_NAME = "${DOCKER_USER}/${DOCKER_IMG}"
+endif
+
 build:
 	# Build the container
-	docker build --file ./template/Dockerfile${ARCH_DOCKER} --tag ${DOCKER_USER}/${DOCKER_IMG}:latest${ARCH_TAG} .
+	echo ${TAG_NAME}
+	exit 1
+	docker build --file ./template/Dockerfile${ARCH_DOCKER} --tag ${TAG_NAME}:latest${ARCH_TAG} .
 .PHONY: build
 
 install:
@@ -18,5 +25,9 @@ install:
 .PHONY: install
 
 publish:
-	docker push ${DOCKER_USER}/${DOCKER_IMG}:latest${ARCH_TAG}
+	docker push ${TAG_NAME}:latest${ARCH_TAG}
 .PHONY: publish
+
+test:
+	cd function && npm test
+.PHONY: test
