@@ -4,6 +4,7 @@
   "description": "Converts two postcodes to distance",
   "main": "./src/handler",
   "scripts": {
+    "postversion": "git push --tags && git push",
     "test": "npm run -s test:unit",
     "test:unit": "mocha --throw-deprecation --ui bdd --full-trace --recursive --reporter mocha-multi --reporter-options spec=-,xunit=../reports/unit.xml,doc=../reports/unit.html ./test/unit",
     "watch:test:unit": "nodemon --exec 'npm run -s test:unit' --legacy-watch"
