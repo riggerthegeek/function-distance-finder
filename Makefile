@@ -1,5 +1,5 @@
 ARCH ?= ""
-DOCKER_IMG ?= "distance-finder"
+DOCKER_IMG ?= "function-distance-finder"
 DOCKER_USER ?= ""
 
 ifeq ($(ARCH), armhf)
