@@ -6,6 +6,7 @@
 
 /* Third-party modules */
 const distance = require('google-distance');
+const yml = require('js-yaml');
 
 /* Files */
 
@@ -28,8 +29,12 @@ function getDistance (opts = {}) {
   }).then(({ distanceValue }) => distanceValue);
 }
 
-module.exports = (args = {}) => Promise.resolve()
+module.exports = (input) => Promise
+  .resolve()
   .then(() => {
+    /* JSON is valid YAML */
+    const args = yml.safeLoad(input);
+
     const origin = args.start;
     const destination = args.dest;
     const isReturn = args.return || false;
@@ -48,7 +53,6 @@ module.exports = (args = {}) => Promise.resolve()
       avoid: args.avoid,
     };
 
-
     const tasks = [
       getDistance(opts),
     ];
@@ -62,6 +66,8 @@ module.exports = (args = {}) => Promise.resolve()
       tasks.push(getDistance(returnOpts));
     }
 
-    return Promise.all(tasks)
-      .then(([ outbound, inbound = 0]) => outbound + inbound);
-  });
+    return Promise.all(tasks);
+  })
+  .then(([outbound, inbound = 0]) => ({
+    dist: outbound + inbound
+  }));

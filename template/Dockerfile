@@ -4,30 +4,27 @@ LABEL maintainer="Simon Emms <simonemms.com>"
 
 ARG FWATCHDOG_VERSION="0.6.12"
 
-# Add the fwatchdog
-ADD https://github.com/openfaas/faas/releases/download/${FWATCHDOG_VERSION}/fwatchdog /usr/bin
-RUN chmod +x /usr/bin/fwatchdog
+# Add the fwatchdog - this is cached
+RUN apk --no-cache add curl \
+    && echo "Pulling watchdog binary from Github." \
+    && curl -sSL https://github.com/openfaas/faas/releases/download/${FWATCHDOG_VERSION}/fwatchdog > /usr/bin/fwatchdog \
+    && chmod +x /usr/bin/fwatchdog \
+    && apk del curl --no-cache
 
 # Set correct permissions to use non root user
 WORKDIR /home/node/
 
 # Wrapper/boot-strapper
-COPY package.json ./
+COPY template/* ./
 
 # This ordering means the npm installation is cached for the outer function handler.
 RUN npm install --production
 
-# Copy outer function handler
-COPY index.js ./
-
 # COPY function node packages and install, adding this as a separate
 # entry allows caching of npm install
 WORKDIR /home/node/function
-COPY function/*.json ./
+COPY function/* ./
 RUN npm install --production || :
-
-# COPY function files and folders
-COPY function/ ./
 
 # Set correct permissions to use non root user
 WORKDIR /home/node/
