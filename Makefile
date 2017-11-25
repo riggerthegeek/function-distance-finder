@@ -13,10 +13,12 @@ TAG_NAME = "${DOCKER_USER}/${DOCKER_IMG}"
 endif
 
 build:
-	# Build the container
-	echo ${TAG_NAME}
-	exit 1
+# 	Build the container
+	$(eval VERSION := $(shell ./function/node_modules/.bin/json -f ./function/package.json -a version))
+	@echo ${VERSION}
+
 	docker build --file ./template/Dockerfile${ARCH_DOCKER} --tag ${TAG_NAME}:latest${ARCH_TAG} .
+	docker tag ${TAG_NAME}:latest${ARCH_TAG} ${TAG_NAME}:${VERSION}${ARCH_TAG}
 .PHONY: build
 
 install:
