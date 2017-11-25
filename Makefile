@@ -1,11 +1,5 @@
-ARCH ?= ""
 DOCKER_IMG ?= "function-distance-finder"
 DOCKER_USER ?= ""
-
-ifeq ($(ARCH), armhf)
-ARCH_DOCKER := ".armhf"
-ARCH_TAG := "-armhf"
-endif
 
 TAG_NAME = "${DOCKER_IMG}"
 ifneq ($(DOCKER_USER), "")
@@ -14,12 +8,14 @@ endif
 
 build:
 # 	Build the container
-	docker build --file ./template/Dockerfile${ARCH_DOCKER} --tag ${TAG_NAME}:latest${ARCH_TAG} .
+	docker build --file ./template/Dockerfile --tag ${TAG_NAME}:latest .
+	docker build --file ./template/Dockerfile.armhf --tag ${TAG_NAME}:latest-armhf .
 
-	$(eval VERSION := $(shell ./node_modules/.bin/json -f ./package.json -a version))
-	@echo ${VERSION}
-
-	docker tag ${TAG_NAME}:latest${ARCH_TAG} ${TAG_NAME}:${VERSION}${ARCH_TAG}
+#	$(eval VERSION := $(shell make version))
+#	@echo ${VERSION}
+#
+#	docker tag ${TAG_NAME}:latest ${TAG_NAME}:${VERSION}
+#	docker tag ${TAG_NAME}:latest.armhf ${TAG_NAME}:${VERSION}-armhf
 .PHONY: build
 
 install:
@@ -28,9 +24,20 @@ install:
 .PHONY: install
 
 publish:
-	docker push ${TAG_NAME}:latest${ARCH_TAG}
+	$(eval VERSION := $(shell make version))
+	@echo ${VERSION}
+
+	docker push ${TAG_NAME}:latest
+	docker push ${TAG_NAME}:${VERSION}
+
+	docker push ${TAG_NAME}:latest-armhf
+	docker push ${TAG_NAME}:${VERSION}-armhf
 .PHONY: publish
 
 test:
 	cd function && npm test
 .PHONY: test
+
+version:
+	@echo $(shell ./node_modules/.bin/json -f ./package.json -a version)
+.PHONY: version
