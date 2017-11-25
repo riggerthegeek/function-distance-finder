@@ -1,6 +1,6 @@
 {
   "name": "function-distance-finder",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Converts two postcodes to distance",
   "main": "./src/handler",
   "scripts": {
