@@ -34,7 +34,7 @@ WORKDIR /home/node/
 
 # chmod for tmp is for a buildkit issue (@alexellis)
 RUN chown node:node -R /home/node \
-    && chmod 777 /tmp
+  && chmod 777 /tmp
 
 USER node
 
