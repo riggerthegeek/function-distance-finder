@@ -15,7 +15,7 @@ build:
 	@echo ${VERSION}
 
 	docker tag ${TAG_NAME}:latest ${TAG_NAME}:${VERSION}
-	docker tag ${TAG_NAME}:latest.armhf ${TAG_NAME}:${VERSION}-armhf
+	docker tag ${TAG_NAME}:latest-armhf ${TAG_NAME}:${VERSION}-armhf
 .PHONY: build
 
 install:
