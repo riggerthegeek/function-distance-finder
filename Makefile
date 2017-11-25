@@ -11,11 +11,11 @@ build:
 	docker build --file ./template/Dockerfile --tag ${TAG_NAME}:latest .
 	docker build --file ./template/Dockerfile.armhf --tag ${TAG_NAME}:latest-armhf .
 
-#	$(eval VERSION := $(shell make version))
-#	@echo ${VERSION}
-#
-#	docker tag ${TAG_NAME}:latest ${TAG_NAME}:${VERSION}
-#	docker tag ${TAG_NAME}:latest.armhf ${TAG_NAME}:${VERSION}-armhf
+	$(eval VERSION := $(shell make version))
+	@echo ${VERSION}
+
+	docker tag ${TAG_NAME}:latest ${TAG_NAME}:${VERSION}
+	docker tag ${TAG_NAME}:latest.armhf ${TAG_NAME}:${VERSION}-armhf
 .PHONY: build
 
 install:
