@@ -14,10 +14,11 @@ endif
 
 build:
 # 	Build the container
-	$(eval VERSION := $(shell ./function/node_modules/.bin/json -f ./function/package.json -a version))
+	docker build --file ./template/Dockerfile${ARCH_DOCKER} --tag ${TAG_NAME}:latest${ARCH_TAG} .
+
+	$(eval VERSION := $(shell ./node_modules/.bin/json -f ./package.json -a version))
 	@echo ${VERSION}
 
-	docker build --file ./template/Dockerfile${ARCH_DOCKER} --tag ${TAG_NAME}:latest${ARCH_TAG} .
 	docker tag ${TAG_NAME}:latest${ARCH_TAG} ${TAG_NAME}:${VERSION}${ARCH_TAG}
 .PHONY: build
 

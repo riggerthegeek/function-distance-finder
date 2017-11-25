@@ -24,6 +24,7 @@ RUN npm install --production
 # entry allows caching of npm install
 WORKDIR /home/node/function
 COPY function/* ./
+COPY package.json ./
 RUN npm install --production || :
 
 # Set correct permissions to use non root user
