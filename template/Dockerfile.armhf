@@ -11,7 +11,7 @@ RUN addgroup -S node && adduser -S -g node node
 # Add the fwatchdog - this is cached
 RUN apk --no-cache add curl \
     && echo "Pulling watchdog binary from Github." \
-    && curl -sSL https://github.com/openfaas/faas/releases/download/${FWATCHDOG_VERSION}/fwatchdog > /usr/bin/fwatchdog \
+    && curl -sSL https://github.com/openfaas/faas/releases/download/${FWATCHDOG_VERSION}/fwatchdog-armhf > /usr/bin/fwatchdog \
     && chmod +x /usr/bin/fwatchdog \
     && apk del curl --no-cache
 

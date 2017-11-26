@@ -7,7 +7,7 @@ ARG FWATCHDOG_VERSION="0.6.12"
 # Add the fwatchdog - this is cached
 RUN apk --no-cache add curl \
     && echo "Pulling watchdog binary from Github." \
-    && curl -sSL https://github.com/openfaas/faas/releases/download/${FWATCHDOG_VERSION}/fwatchdog > /usr/bin/fwatchdog \
+    && curl -sSL https://github.com/openfaas/faas/releases/download/${FWATCHDOG_VERSION}/fwatchdog-arm64 > /usr/bin/fwatchdog \
     && chmod +x /usr/bin/fwatchdog \
     && apk del curl --no-cache
 
