@@ -1,10 +1,10 @@
 FROM resin/raspberrypi3-alpine-node:8-slim
 
+RUN [ "cross-build-start" ]
+
 LABEL maintainer="Simon Emms <simonemms.com>"
 
 ARG FWATCHDOG_VERSION="0.6.12"
-
-RUN [ "cross-build-start" ]
 
 RUN addgroup -S node && adduser -S -g node node
 
@@ -38,8 +38,6 @@ WORKDIR /home/node/
 RUN chown node:node -R /home/node \
   && chmod 777 /tmp
 
-RUN [ "cross-build-end" ]
-
 # Define the OpenFAAS envvars here
 ENV cgi_headers="true"
 ENV fprocess="node index.js"
@@ -47,3 +45,5 @@ ENV fprocess="node index.js"
 HEALTHCHECK --interval=1s CMD [ -e /tmp/.lock ] || exit 1
 
 CMD ["fwatchdog"]
+
+RUN [ "cross-build-end" ]
