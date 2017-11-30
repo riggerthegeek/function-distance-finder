@@ -8,7 +8,7 @@ endif
 
 build:
 # 	Build the container
-	docker build --file ./template/Dockerfile --tag ${TAG_NAME}:latest .
+	docker build --file ./Dockerfile --tag ${TAG_NAME}:latest .
 
 	$(eval VERSION := $(shell make version))
 	@echo ${VERSION}
@@ -18,7 +18,7 @@ build:
 
 build-armhf:
 # 	Build the container
-	docker build --file ./template/Dockerfile.armhf --tag ${TAG_NAME}:latest-armhf .
+	docker build --file ./Dockerfile.armhf --tag ${TAG_NAME}:latest-armhf .
 
 	$(eval VERSION := $(shell make version))
 	@echo ${VERSION}
