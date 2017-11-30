@@ -1,4 +1,4 @@
-FROM riggerthegeek/faas-node-template:latest
+FROM riggerthegeek/faas-node:latest
 
 LABEL maintainer="Simon Emms <simon@simonemms.com>"
 

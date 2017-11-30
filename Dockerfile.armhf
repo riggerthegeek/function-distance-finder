@@ -1,4 +1,4 @@
-FROM riggerthegeek/faas-node-template:latest-armhf
+FROM riggerthegeek/faas-node:latest-armhf
 
 #RUN [ "cross-build-start" ]
 
