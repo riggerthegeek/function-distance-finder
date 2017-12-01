@@ -1,6 +1,6 @@
 FROM riggerthegeek/faas-node:latest-armhf
 
-#RUN [ "cross-build-start" ]
+RUN [ "cross-build-start" ]
 
 LABEL maintainer="Simon Emms <simonemms.com>"
 
@@ -13,4 +13,4 @@ ADD ./package-lock.json ./function
 RUN cd function \
   && npm install --production || :
 
-#RUN [ "cross-build-end" ]
+RUN [ "cross-build-end" ]
