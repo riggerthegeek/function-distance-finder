@@ -64,3 +64,4 @@ typings/
 Thumbs.db
 
 reports
+./docker*
