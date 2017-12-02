@@ -8,6 +8,10 @@ sudo: required
 services:
 - docker
 
+env:
+  matrix:
+    - ARCH=arm
+
 before_install:
 - date
 - docker login --username=${DOCKER_USER} --password=${DOCKER_PASS}
