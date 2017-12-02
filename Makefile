@@ -8,14 +8,15 @@ endif
 
 build:
 # 	Build the container
-	docker build --file ./template/Dockerfile --tag ${TAG_NAME}:latest .
-	docker build --file ./template/Dockerfile.armhf --tag ${TAG_NAME}:latest-arm .
+#	docker build --file ./Dockerfile --tag ${TAG_NAME}:latest .
+	docker build --file ./Dockerfile.armhf --tag ${TAG_NAME}:latest-arm .
 
 	$(eval VERSION := $(shell make version))
 	@echo ${VERSION}
 
-	docker tag ${TAG_NAME}:latest ${TAG_NAME}:${VERSION}
+#	docker tag ${TAG_NAME}:latest ${TAG_NAME}:${VERSION}
 	docker tag ${TAG_NAME}:latest-arm ${TAG_NAME}:${VERSION}-arm
+	docker inspect ${TAG_NAME}:${VERSION}-arm | grep -i arch
 .PHONY: build
 
 install:
@@ -27,8 +28,8 @@ publish:
 	$(eval VERSION := $(shell make version))
 	@echo ${VERSION}
 
-	docker push ${TAG_NAME}:latest
-	docker push ${TAG_NAME}:${VERSION}
+#	docker push ${TAG_NAME}:latest
+#	docker push ${TAG_NAME}:${VERSION}
 
 	docker push ${TAG_NAME}:latest-arm
 	docker push ${TAG_NAME}:${VERSION}-arm
