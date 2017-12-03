@@ -20,11 +20,6 @@ download-docker:
 	./docker version
 .PHONY: download-docker
 
-install:
-	npm install
-	cd function && npm install
-.PHONY: install
-
 publish:
 	./docker version || make download-docker
 	$(eval VERSION := $(shell make version))

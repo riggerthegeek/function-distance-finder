@@ -12,9 +12,6 @@ before_install:
 - date
 - docker login --username=${DOCKER_USER} --password=${DOCKER_PASS}
 
-install:
-- make install
-
 script:
 - make test
 - make build
