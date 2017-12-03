@@ -1,6 +1,6 @@
 DOCKER_IMG ?= function-distance-finder
 DOCKER_MANIFEST_URL ?= https://6582-88013053-gh.circle-artifacts.com/1/work/build/docker-linux-amd64
-DOCKER_USER ?=
+DOCKER_USER ?= ""
 
 TAG_NAME = ${DOCKER_IMG}
 ifneq ($(DOCKER_USER), "")
