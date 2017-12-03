@@ -2,7 +2,7 @@
   "name": "function-distance-finder",
   "version": "0.1.0",
   "description": "Converts two postcodes to distance",
-  "main": "./src/handler",
+  "main": "./function/handler",
   "scripts": {
     "postversion": "git push --tags && git push",
     "test": "npm run -s test:unit",
