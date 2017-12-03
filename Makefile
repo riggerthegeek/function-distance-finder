@@ -9,8 +9,6 @@ endif
 
 build:
 	@echo "Building latest Docker images"
-	make install
-
 	docker build --file ./Dockerfile --tag ${TAG_NAME}:linux-amd64-latest .
 	docker build --file ./Dockerfile.arm --tag ${TAG_NAME}:linux-arm-latest .
 .PHONY: build
