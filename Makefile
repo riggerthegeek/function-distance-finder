@@ -48,6 +48,15 @@ publish:
 	./docker -D manifest push "${TAG_NAME}:latest"
 .PHONY: publish
 
+serve:
+	docker run \
+		-v ${PWD}/function:/home/node/function \
+		-v ${PWD}/node_modules:/home/node_modules \
+		-it --rm \
+		${TAG_NAME}:linux-amd64-latest sh -c \
+		"echo '${INPUT}' | node index.js"
+.PHONY: serve
+
 test:
 	npm test
 .PHONY: test
